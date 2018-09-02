@@ -1,0 +1,11 @@
+{
+  "name": "installGit",
+  "version": "0.0.1",
+  "dependencies": {
+    "@ys/common_dependency": "git+https://github.com/spirit1453/codebase.git#common_dependency"
+  },
+  "devDependencies": {
+    "@ys/eslint-config-strict": "git+https://github.com/spirit1453/codebase.git#strict_eslint",
+    "babel-cli": "^6.26.0"
+  }
+}
