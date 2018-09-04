@@ -4,9 +4,9 @@
   "bugs": {
     "url": ""
   },
-  "private":true,
+  "private": true,
   "dependencies": {
-    "@ys/common_dependency": "git+https://github.com/spirit1453/codebase.git#common_dependency"
+    "@ys/vanilla": "git+https://github.com/spirit1453/vanilla_js.git#publish"
   },
   "description": "js collection",
   "devDependencies": {
