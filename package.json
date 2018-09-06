@@ -6,7 +6,9 @@
   },
   "private": true,
   "dependencies": {
-    "@ys/vanilla": "git+https://github.com/spirit1453/vanilla_js.git#publish"
+    "@ys/vanilla": "git+https://github.com/spirit1453/vanilla_js.git#publish",
+    "fs-extra": "^7.0.0",
+    "winston": "^3.1.0"
   },
   "description": "js collection",
   "devDependencies": {
