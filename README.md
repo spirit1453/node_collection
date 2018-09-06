@@ -1,0 +1,1 @@
+npm i  https://github.com/spirit1453/node_collection.git#publish
