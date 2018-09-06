@@ -4,6 +4,9 @@ const {removeExt} = require('./FileUtil')
 const path = require('path')
 const debugLog = require('debug')('debug')
 const childProcess = require('child_process')
+const fse = require('fs-extra')
+const { createLogger, format, transports } = require('winston')
+const { combine, timestamp, prettyPrint } = format
 
 class Cls {
   static requireAll (folderPath) {
@@ -19,7 +22,7 @@ class Cls {
 
     return result
   }
-  static installGit (packageJsonPath) {
+  static _installGit (packageJsonPath) {
     const packageObj = require(packageJsonPath)
     const {dependencies, devDependencies} = packageObj
     const ary = [dependencies, devDependencies]
@@ -53,6 +56,26 @@ class Cls {
       promiseAry.push(p)
     }
     return Promise.all(promiseAry)
+  }
+  static installGit (rootPath) {
+    const logFolder = path.resolve(rootPath, 'local/log')
+    fse.ensureDirSync(logFolder)
+    const errorLog = path.resolve(logFolder, 'error.log')
+    const logger = createLogger({
+      level: 'info',
+      format: combine(
+        timestamp(),
+        prettyPrint()
+      ),
+      transports: [
+        new transports.File({ filename: errorLog, level: 'error' })
+      ]
+    })
+    return (async () => {
+      await Cls._installGit(path.resolve(rootPath, 'package.json'))
+    })().catch((err) => {
+      logger.error(err)
+    })
   }
 }
 
