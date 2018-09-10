@@ -38,9 +38,7 @@
     "doc": "esdoc && open ./local/docs/index.html",
     "jest": "DEBUG=debug jest --coverage",
     "lint": "eslint --fix .",
-    "precommit": "npm test",
     "postinstall": "node bin/postinstall",
-    "prepush": "npm test",
     "start": "",
     "task": "gulp",
     "test": "npm run lint && npm run jest"
