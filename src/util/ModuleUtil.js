@@ -9,11 +9,17 @@ const { createLogger, format, transports } = require('winston')
 const { combine, timestamp, prettyPrint } = format
 
 class Cls {
-  static requireAll (folderPath) {
+  static requireAll (folderPath, option = {
+    ignoreIndex: true
+  }) {
     const result = {}
+    const {ignoreIndex} = option
     const fileAry = fs.readdirSync(folderPath)
     for (let ele of fileAry) {
       if (ele.endsWith('.js')) {
+        if (ignoreIndex && ele === 'index.js') {
+          continue
+        }
         const fileName = removeExt(ele)
         result[fileName] = require(path.resolve(folderPath, ele))
       }
