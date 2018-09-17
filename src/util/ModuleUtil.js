@@ -45,9 +45,9 @@ class Cls {
     const promiseAry = []
     for (const key in obj) {
       const value = obj[key]
-      const protocolAry = ['git', 'http', 'git+https', 'github:']
+      const protocolAry = ['git', 'http', 'git+https', 'github']
       const condition = protocolAry.some(ele => {
-        return value.startsWith(`${ele}://`)
+        return value.startsWith(`${ele}:`)
       })
       const p = new Promise(resolve => {
         if (condition) {
