@@ -29,7 +29,7 @@
   "name": "@ys/collection",
   "repository": {
     "type": "git",
-    "url": "https://github.com/spirit1453/codebase.git#js_collection"
+    "url": " https://github.com/spirit1453/node_collection.git"
   },
   "scripts": {
     "build": "babel src/ -d lib/",
