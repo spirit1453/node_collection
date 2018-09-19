@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 const childProcess = require('child_process')
 
 class Cls {
@@ -37,12 +38,17 @@ class Cls {
   }
   static getPid (port) {
     let pid
-    const output = childProcess.execSync(`
+    try {
+      const output = childProcess.execSync(`
       lsof -i :${port}
     `).toString()
-    if (output) {
-      pid = output.split('\n')[1].split(' ').filter(ele => ele)[1]
+      if (output) {
+        pid = output.split('\n')[1].split(' ').filter(ele => ele)[1]
+      }
+    } catch (err) {
+
     }
+
     return pid
   }
 }
