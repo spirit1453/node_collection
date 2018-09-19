@@ -1,12 +1,13 @@
 /* eslint-disable global-require */
 const fs = require('fs')
-const {removeExt} = require('./FileUtil')
 const path = require('path')
 const debugLog = require('debug')('debug')
 const childProcess = require('child_process')
 const fse = require('fs-extra')
 const { createLogger, format, transports } = require('winston')
 const { combine, timestamp, prettyPrint } = format
+const {FileUtil} = require('@ys/vanilla')
+const {removeExt} = FileUtil
 
 class Cls {
   static requireAll (folderPath, option = {
@@ -82,6 +83,29 @@ class Cls {
     })().catch((err) => {
       logger.error(err)
     })
+  }
+  static formIndex (option) {
+    const {indexFile, utilDir} = option
+
+    const str1 = `/* eslint-disable global-require */
+const result = {\n`
+    const str3 = `\n}
+
+Object.freeze(result)
+module.exports = result\n`
+    let str2 = '  '
+    const fileAry = fse.readdirSync(utilDir)
+    const {length} = fileAry
+    for (let i = 0; i < length; i++) {
+      const file = fileAry[i]
+      const pureName = removeExt(file)
+      str2 += `${pureName}: require('./util/${pureName}')`
+      if (i !== length - 1) {
+        str2 += `,\n  `
+      }
+    }
+
+    fse.writeFileSync(indexFile, str1 + str2 + str3)
   }
 }
 

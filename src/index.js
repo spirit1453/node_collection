@@ -1,8 +1,12 @@
-
-const ModuleUtil = require('./util/ModuleUtil')
-const path = require('path')
-const rootPath = path.resolve(__dirname, '../')
-const result = ModuleUtil.requireAll(path.resolve(rootPath, 'src/util'))
+/* eslint-disable global-require */
+const result = {
+  CliUtil: require('./util/CliUtil'),
+  ErrorUtil: require('./util/ErrorUtil'),
+  FileUtil: require('./util/FileUtil'),
+  GitUtil: require('./util/GitUtil'),
+  ModuleUtil: require('./util/ModuleUtil'),
+  SSHUtil: require('./util/SSHUtil')
+}
 
 Object.freeze(result)
 module.exports = result
