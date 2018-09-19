@@ -30,14 +30,19 @@ class Cls {
   static killPort (...portAry) {
     for (let port of portAry) {
       const pid = Cls.getPid(port)
-      childProcess.execSync(`kill ${pid}`)
+      if (pid) {
+        childProcess.execSync(`kill ${pid}`)
+      }
     }
   }
   static getPid (port) {
+    let pid
     const output = childProcess.execSync(`
       lsof -i :${port}
     `).toString()
-    const pid = output.split('\n')[1].split(' ').filter(ele => ele)[1]
+    if (output) {
+      pid = output.split('\n')[1].split(' ').filter(ele => ele)[1]
+    }
     return pid
   }
 }
