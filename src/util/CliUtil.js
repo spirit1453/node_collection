@@ -1,3 +1,4 @@
+const childProcess = require('child_process')
 
 class Cls {
   static checkOption (option) {
@@ -25,6 +26,19 @@ class Cls {
     //
     //   _.merge(param, answer)
     // }
+  }
+  static killPort (...portAry) {
+    for (let port of portAry) {
+      const pid = Cls.getPid(port)
+      childProcess.execSync(`kill ${pid}`)
+    }
+  }
+  static getPid (port) {
+    const output = childProcess.execSync(`
+      lsof -i :${port}
+    `).toString()
+    const pid = output.split('\n')[1].split(' ').filter(ele => ele)[1]
+    return pid
   }
 }
 
