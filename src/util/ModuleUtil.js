@@ -107,6 +107,9 @@ module.exports = result\n`
 
     fse.writeFileSync(indexFile, str1 + str2 + str3)
   }
+  static isDependency (rootPath) {
+    return path.basename(path.resolve(rootPath, '../')) === 'node_modules'
+  }
 }
 
 Object.freeze(Cls)
