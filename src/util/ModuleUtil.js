@@ -53,7 +53,7 @@ class Cls {
       const p = new Promise(resolve => {
         if (condition) {
           childProcess.execSync(`
-          npm i ${key}
+          npm i ${value}
         `, {
             cwd
           })
