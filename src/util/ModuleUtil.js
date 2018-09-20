@@ -32,17 +32,18 @@ class Cls {
   static _installGit (packageJsonPath) {
     const packageObj = require(packageJsonPath)
     const {dependencies, devDependencies} = packageObj
-    const ary = [dependencies, devDependencies]
     const projectPath = path.resolve(packageJsonPath, '..')
 
     const promiseAry = []
-    ary.forEach(ele => {
-      const p = Cls._f(ele, projectPath)
-      promiseAry.push(p)
-    })
+
+    const ary = [dependencies, devDependencies]
+    let p = Cls._f(dependencies, projectPath)
+    promiseAry.push(p)
+    p = Cls._f(devDependencies, projectPath, true)
+    promiseAry.push(p)
     return Promise.all(promiseAry)
   }
-  static _f (obj, cwd) {
+  static _f (obj, cwd, isDev) {
     const promiseAry = []
     for (const key in obj) {
       const value = obj[key]
@@ -50,17 +51,19 @@ class Cls {
       const condition = protocolAry.some(ele => {
         return value.startsWith(`${ele}:`)
       })
-      const p = new Promise(resolve => {
-        if (condition) {
-          childProcess.execSync(`
-          npm i ${value}
+      if (isDev || (!isDev && !Cls.isDependency(cwd))) {
+        const p = new Promise(resolve => {
+          if (condition) {
+            childProcess.execSync(`
+          npm i ${value} ${isDev ? '-D' : ''}
         `, {
-            cwd
-          })
-        }
-        resolve()
-      })
-      promiseAry.push(p)
+              cwd
+            })
+          }
+          resolve()
+        })
+        promiseAry.push(p)
+      }
     }
     return Promise.all(promiseAry)
   }
