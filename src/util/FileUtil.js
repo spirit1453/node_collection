@@ -7,6 +7,13 @@ class Cls {
     const result = fse.existsSync(packageJson)
     return result
   }
+  static getAbsolutePath (itemPath) {
+    let result = itemPath
+    if (!path.isAbsolute(itemPath)) {
+      result = path.resolve(process.cwd(), itemPath)
+    }
+    return result
+  }
 }
 
 Object.freeze(Cls)
