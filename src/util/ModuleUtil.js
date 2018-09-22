@@ -2,12 +2,12 @@
 const fs = require('fs')
 const path = require('path')
 const debugLog = require('debug')('debug')
-const childProcess = require('child_process')
 const fse = require('fs-extra')
 const { createLogger, format, transports } = require('winston')
 const { combine, timestamp, prettyPrint } = format
 const {FileUtil} = require('@ys/vanilla')
 const {removeExt} = FileUtil
+const {execSync} = require('./CliUtil')
 
 class Cls {
   static requireAll (folderPath, option = {
@@ -36,7 +36,6 @@ class Cls {
 
     const promiseAry = []
 
-    const ary = [dependencies, devDependencies]
     let p = Cls._f(dependencies, projectPath)
     promiseAry.push(p)
     p = Cls._f(devDependencies, projectPath, true)
@@ -54,7 +53,7 @@ class Cls {
       if (isDev || (!isDev && !Cls.isDependency(cwd))) {
         const p = new Promise(resolve => {
           if (condition) {
-            childProcess.execSync(`
+            execSync(`
           npm i ${value} ${isDev ? '-D' : ''}
         `, {
               cwd
