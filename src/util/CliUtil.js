@@ -1,5 +1,6 @@
 /* eslint-disable no-empty */
 const childProcess = require('child_process')
+const _ = require('lodash')
 
 class Cls {
   static checkOption (option) {
@@ -50,6 +51,12 @@ class Cls {
     }
 
     return pid
+  }
+  static execSync (cmd, option) {
+    const defaultOption = {
+      stdio: [process.stderr, process.stdin, process.stdout]
+    }
+    childProcess.execSync(cmd, _.merge(defaultOption, option))
   }
 }
 
