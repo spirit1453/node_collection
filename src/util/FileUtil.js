@@ -1,4 +1,4 @@
-const fse = require('fse-extra')
+const fse = require('fs-extra')
 const path = require('path')
 
 class Cls {
