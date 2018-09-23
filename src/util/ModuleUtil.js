@@ -45,6 +45,7 @@ class Cls {
     return Promise.all(promiseAry)
   }
   static _f (obj, cwd, isDev) {
+    debug({cwd})
     const promiseAry = []
     for (const key in obj) {
       const value = obj[key]
