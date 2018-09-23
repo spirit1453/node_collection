@@ -127,7 +127,7 @@ module.exports = result\n`
     let result
     if (isFromGit) {
       const moduleNameAry = moduleName.split('/')
-      const modulePackageObj = require(path.join(rootPathDir, 'node_modules', ...moduleNameAry))
+      const modulePackageObj = require(path.join(rootPathDir, 'node_modules', ...moduleNameAry, 'package.json'))
       const sha = modulePackageObj._resolved.split('#').pop()
       result = sha
     } else {
@@ -136,7 +136,7 @@ module.exports = result\n`
     return result
   }
   static isFromGit (value) {
-    const protocolAry = ['git:', 'http', 'git+https', 'github', "git@"]
+    const protocolAry = ['git:', 'http', 'git+https', 'github', 'git@']
     const condition = protocolAry.some(ele => {
       return value.startsWith(`${ele}:`)
     })
@@ -144,7 +144,7 @@ module.exports = result\n`
   }
   static getRepoInfo (gitSrc) {
     const gitSuffix = '.git'
-    let owner,repo,branch
+    let branch, owner, repo
     if (gitSrc.includes(gitSuffix)) {
       let ary = gitSrc.split(gitSuffix)
       branch = ary[1].split('#')[1]
