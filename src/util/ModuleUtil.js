@@ -8,6 +8,8 @@ const { combine, timestamp, prettyPrint } = format
 const {FileUtil} = require('@ys/vanilla')
 const {removeExt} = FileUtil
 const {execSync} = require('./CliUtil')
+const {getRecentCommit} = require('./GitHubUtil')
+const debug = require('debug')('ModuleUtil')
 
 class Cls {
   static requireAll (folderPath, option = {
@@ -46,28 +48,34 @@ class Cls {
     const promiseAry = []
     for (const key in obj) {
       const value = obj[key]
-      const protocolAry = ['git', 'http', 'git+https', 'github']
-      const condition = protocolAry.some(ele => {
-        return value.startsWith(`${ele}:`)
-      })
-      if (isDev || (!isDev && !Cls.isDependency(cwd))) {
+      const isFromGit = Cls.isFromGit(value)
+      if (isFromGit && (isDev || (!isDev && !Cls.isDependency(cwd)))) {
         const p = new Promise(resolve => {
-          if (condition) {
-            execSync(`
+          const option = Cls.getRepoInfo(value)
+          debug({repoInfo: option})
+          ;(async () => {
+            const {sha: remoteSha} = await getRecentCommit(option)
+            const localSha = Cls.getGitModuleSha({
+              rootPath: cwd, moduleName: key, moduleSrc: value
+            })
+            if (localSha !== remoteSha) {
+              execSync(`
           npm i ${value} ${isDev ? '-D' : ''}
         `, {
-              cwd
-            })
-          }
-          resolve()
+                cwd
+              })
+            }
+
+            resolve()
+          })()
         })
         promiseAry.push(p)
       }
     }
     return Promise.all(promiseAry)
   }
-  static installGit (rootPath) {
-    const logFolder = path.resolve(rootPath, 'local/log')
+  static installGit (rootPathDir) {
+    const logFolder = path.resolve(rootPathDir, 'local/log')
     fse.ensureDirSync(logFolder)
     const errorLog = path.resolve(logFolder, 'error.log')
     const logger = createLogger({
@@ -81,7 +89,7 @@ class Cls {
       ]
     })
     return (async () => {
-      await Cls._installGit(path.resolve(rootPath, 'package.json'))
+      await Cls._installGit(path.resolve(rootPathDir, 'package.json'))
     })().catch((err) => {
       logger.error(err)
     })
@@ -109,8 +117,53 @@ module.exports = result\n`
 
     fse.writeFileSync(indexFile, str1 + str2 + str3)
   }
-  static isDependency (rootPath) {
-    return path.basename(path.resolve(rootPath, '../')) === 'node_modules'
+  static isDependency (rootPathDir) {
+    return path.basename(path.resolve(rootPathDir, '../')) === 'node_modules'
+  }
+  static getGitModuleSha (option) {
+    const {rootPath: rootPathDir, moduleName, moduleSrc} = option
+    const isFromGit = Cls.isFromGit(moduleSrc)
+    let result
+    if (isFromGit) {
+      const moduleNameAry = moduleName.split('/')
+      const modulePackageObj = require(path.join(rootPathDir, 'node_modules', ...moduleNameAry))
+      const sha = modulePackageObj._resolved.split('#').pop()
+      result = sha
+    } else {
+      throw new Error(`${moduleSrc} is not a git repo`)
+    }
+    return result
+  }
+  static isFromGit (value) {
+    const protocolAry = ['git:', 'http', 'git+https', 'github', "git@"]
+    const condition = protocolAry.some(ele => {
+      return value.startsWith(`${ele}:`)
+    })
+    return Boolean(condition)
+  }
+  static getRepoInfo (gitSrc) {
+    const gitSuffix = '.git'
+    let owner,repo,branch
+    if (gitSrc.includes(gitSuffix)) {
+      let ary = gitSrc.split(gitSuffix)
+      branch = ary[1].split('#')[1]
+      ary = ary[0].split('/')
+      repo = ary.pop()
+      owner = ary.pop().split(':').pop()
+    } else {
+      let ary = gitSrc.split('github:')[1].split('/')
+      owner = ary[0]
+      ary = ary[1].split('#')
+      repo = ary[0]
+      branch = ary[1]
+    }
+    branch = branch || Cls.getDefaultRepo({owner, repo})
+    return {
+      owner, repo, branch
+    }
+  }
+  static getDefaultRepo ({owner, repo}) {
+    return 'master'
   }
 }
 
