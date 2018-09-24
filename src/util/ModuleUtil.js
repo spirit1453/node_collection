@@ -127,7 +127,11 @@ module.exports = result\n`
     let result
     if (isFromGit) {
       const moduleNameAry = moduleName.split('/')
-      const modulePackageObj = require(path.join(rootPathDir, 'node_modules', ...moduleNameAry, 'package.json'))
+      let packageJsonPath = path.join(rootPathDir, 'node_modules', ...moduleNameAry, 'package.json')
+      if (!fs.existsSync(packageJsonPath)) {
+        packageJsonPath = path.join(rootPathDir, '../', ...moduleNameAry, 'package.json')
+      }
+      const modulePackageObj = require()
       const sha = modulePackageObj._resolved.split('#').pop()
       result = sha
     } else {
