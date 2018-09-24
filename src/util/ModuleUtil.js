@@ -131,7 +131,7 @@ module.exports = result\n`
       if (!fs.existsSync(packageJsonPath)) {
         packageJsonPath = path.join(rootPathDir, '../', ...moduleNameAry, 'package.json')
       }
-      const modulePackageObj = require()
+      const modulePackageObj = require(packageJsonPath)
       const sha = modulePackageObj._resolved.split('#').pop()
       result = sha
     } else {
