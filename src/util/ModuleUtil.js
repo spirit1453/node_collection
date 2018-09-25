@@ -40,8 +40,10 @@ class Cls {
 
     let p = Cls._f(dependencies, projectPath)
     promiseAry.push(p)
-    p = Cls._f(devDependencies, projectPath, true)
-    promiseAry.push(p)
+    if (!Cls.isDependency(packageJsonPath)) {
+      p = Cls._f(devDependencies, projectPath, true)
+      promiseAry.push(p)
+    }
     return Promise.all(promiseAry)
   }
   static _f (obj, cwd, isDev) {
@@ -50,7 +52,7 @@ class Cls {
     for (const key in obj) {
       const value = obj[key]
       const isFromGit = Cls.isFromGit(value)
-      if (isFromGit && (isDev || (!isDev && !Cls.isDependency(cwd)))) {
+      if (isFromGit) {
         const p = new Promise(resolve => {
           const option = Cls.getRepoInfo(value)
           debug({repoInfo: option})
@@ -119,7 +121,7 @@ module.exports = result\n`
     fse.writeFileSync(indexFile, str1 + str2 + str3)
   }
   static isDependency (rootPathDir) {
-    return path.basename(path.resolve(rootPathDir, '../')) === 'node_modules'
+    return rootPathDir.split(path.sep).includes('node_modules')
   }
   static getGitModuleSha (option) {
     const {rootPath: rootPathDir, moduleName, moduleSrc} = option
