@@ -5,11 +5,12 @@ const debugLog = require('debug')('debug')
 const fse = require('fs-extra')
 const { createLogger, format, transports } = require('winston')
 const { combine, timestamp, prettyPrint } = format
-const {FileUtil} = require('@ys/vanilla')
+const {FileUtil, CliUtil: CliUtilVa} = require('@ys/vanilla')
 const {removeExt} = FileUtil
 const {execSync} = require('./CliUtil')
 const {getRecentCommit} = require('./GitHubUtil')
 const debug = require('debug')('ModuleUtil')
+const {error} = CliUtilVa
 
 class Cls {
   static requireAll (folderPath, option = {
@@ -79,23 +80,10 @@ class Cls {
     return Promise.all(promiseAry)
   }
   static installGit (rootPathDir) {
-    const logFolder = path.resolve(rootPathDir, 'local/log')
-    fse.ensureDirSync(logFolder)
-    const errorLog = path.resolve(logFolder, 'error.log')
-    const logger = createLogger({
-      level: 'info',
-      format: combine(
-        timestamp(),
-        prettyPrint()
-      ),
-      transports: [
-        new transports.File({ filename: errorLog, level: 'error' })
-      ]
-    })
     return (async () => {
       await Cls._installGit(path.resolve(rootPathDir, 'package.json'))
     })().catch((err) => {
-      logger.error(err)
+      error(err)
     })
   }
   static formIndex (option) {
@@ -129,6 +117,7 @@ module.exports = result\n`
     const isFromGit = Cls.isFromGit(moduleSrc)
     let result
     if (isFromGit) {
+      // todo should check node_module in a graceful way
       const moduleNameAry = moduleName.split('/')
       let packageJsonPath = path.join(rootPathDir, 'node_modules', ...moduleNameAry, 'package.json')
       if (!fs.existsSync(packageJsonPath)) {
