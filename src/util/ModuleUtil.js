@@ -61,6 +61,7 @@ class Cls {
             const localSha = Cls.getGitModuleSha({
               rootPath: cwd, moduleName: key, moduleSrc: value
             })
+            // todo check whether should install should be iteration to the dep of dep
             if (localSha !== remoteSha) {
               execSync(`
           npm i ${value} ${isDev ? '-D' : ''}
