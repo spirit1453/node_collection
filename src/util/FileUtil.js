@@ -7,6 +7,11 @@ class Cls {
     const result = fse.existsSync(packageJson)
     return result
   }
+  static throwIfNotRoot (folder) {
+    if (!Cls.isRoot(folder)) {
+      throw new Error(`${folder} is not a standard node project`)
+    }
+  }
   static getAbsolutePath (itemPath) {
     let result = itemPath
     if (!path.isAbsolute(itemPath)) {
