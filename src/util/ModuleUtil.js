@@ -56,12 +56,15 @@ class Cls {
           const option = Cls.getRepoInfo(value)
           debug({repoInfo: option})
           ;(async () => {
-            const {sha: remoteSha} = await getRecentCommit(option)
-            const localSha = Cls.getGitModuleSha({
-              rootPath: cwd, moduleName: key, moduleSrc: value
-            })
+            const param = {
+              moduleSrc: value,
+              rootPath: cwd,
+              moduleName: key
+            }
+            const isSame = await Cls.gitModuleShaSame(param)
+
             // todo check whether should install should be iteration to the dep of dep
-            if (localSha !== remoteSha) {
+            if (isSame) {
               execSync(`
           npm i ${value} ${isDev ? '-D' : ''}
         `, {
@@ -76,6 +79,15 @@ class Cls {
       }
     }
     return Promise.all(promiseAry)
+  }
+  static async gitModuleShaSame (option) {
+    const {moduleSrc, rootPath, moduleName} = option
+    const repoInfo = Cls.getRepoInfo(moduleSrc)
+    const {sha: remoteSha} = await getRecentCommit(repoInfo)
+    const localSha = Cls.getGitModuleSha({
+      rootPath, moduleName, moduleSrc
+    })
+    return localSha === remoteSha
   }
   static installGit (rootPathDir) {
     return (async () => {
