@@ -59,7 +59,7 @@ class CliUtil {
     }
     childProcess.execSync(cmd, _.merge(defaultOption, option))
   }
-  static async mergeOption ({argv, option}) {
+  static async mergeOption ({argv, option = {}}) {
     const questionAry = []
     const param = {}
     for (let key in option) {
