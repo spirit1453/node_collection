@@ -172,7 +172,8 @@ module.exports = result\n`
       owner, repo, branch
     }
   }
-  static getDefaultRepo ({owner, repo}) {
+  static getDefaultRepo () {
+    // const {owner, repo} = option
     return 'master'
   }
 }
