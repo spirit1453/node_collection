@@ -1,14 +1,15 @@
 const fse = require('fs-extra')
 const path = require('path')
+const {execSync} = require('./CliUtil')
 
-class Cls {
+class FileUtil {
   static isRoot (folder) {
     const packageJson = path.resolve(folder, 'package.json')
     const result = fse.existsSync(packageJson)
     return result
   }
   static throwIfNotRoot (folder) {
-    if (!Cls.isRoot(folder)) {
+    if (!FileUtil.isRoot(folder)) {
       throw new Error(`${folder} is not a standard node project`)
     }
   }
@@ -42,7 +43,13 @@ class Cls {
       })
     })
   }
+
+  static webstorm (filepath) {
+    execSync(`
+       webstorm ${filepath}
+      `)
+  }
 }
 
-Object.freeze(Cls)
-module.exports = Cls
+Object.freeze(FileUtil)
+module.exports = FileUtil
