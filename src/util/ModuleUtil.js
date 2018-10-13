@@ -9,8 +9,9 @@ const {execSync} = require('./CliUtil')
 const {getRecentCommit} = require('./GitHubUtil')
 const debug = require('debug')('ModuleUtil')
 const {error} = CliUtilVa
+const {throwIfNotRoot} = require('./FileUtil')
 
-class Cls {
+class ModuleUtil {
   static requireAll (folderPath, option = {
     ignoreIndex: true
   }) {
@@ -37,10 +38,10 @@ class Cls {
 
     const promiseAry = []
 
-    let p = Cls._f(dependencies, projectPath)
+    let p = ModuleUtil._f(dependencies, projectPath)
     promiseAry.push(p)
-    if (!Cls.isDependency(packageJsonPath)) {
-      p = Cls._f(devDependencies, projectPath, true)
+    if (!ModuleUtil.isDependency(packageJsonPath)) {
+      p = ModuleUtil._f(devDependencies, projectPath, true)
       promiseAry.push(p)
     }
     return Promise.all(promiseAry)
@@ -50,10 +51,10 @@ class Cls {
     const promiseAry = []
     for (const key in obj) {
       const value = obj[key]
-      const isFromGit = Cls.isFromGit(value)
+      const isFromGit = ModuleUtil.isFromGit(value)
       if (isFromGit) {
         const p = new Promise(resolve => {
-          const option = Cls.getRepoInfo(value)
+          const option = ModuleUtil.getRepoInfo(value)
           debug({repoInfo: option})
           ;(async () => {
             const param = {
@@ -61,7 +62,7 @@ class Cls {
               rootPath: cwd,
               moduleName: key
             }
-            const isSame = await Cls.gitModuleShaSame(param)
+            const isSame = await ModuleUtil.gitModuleShaSame(param)
 
             // todo check whether should install should be iteration to the dep of dep
             if (isSame) {
@@ -82,16 +83,16 @@ class Cls {
   }
   static async gitModuleShaSame (option) {
     const {moduleSrc, rootPath, moduleName} = option
-    const repoInfo = Cls.getRepoInfo(moduleSrc)
+    const repoInfo = ModuleUtil.getRepoInfo(moduleSrc)
     const {sha: remoteSha} = await getRecentCommit(repoInfo)
-    const localSha = Cls.getGitModuleSha({
+    const localSha = ModuleUtil.getGitModuleSha({
       rootPath, moduleName, moduleSrc
     })
     return localSha === remoteSha
   }
   static installGit (rootPathDir) {
     return (async () => {
-      await Cls._installGit(path.resolve(rootPathDir, 'package.json'))
+      await ModuleUtil._installGit(path.resolve(rootPathDir, 'package.json'))
     })().catch((err) => {
       error(err)
     })
@@ -124,7 +125,7 @@ module.exports = result\n`
   }
   static getGitModuleSha (option) {
     const {rootPath: rootPathDir, moduleName, moduleSrc} = option
-    const isFromGit = Cls.isFromGit(moduleSrc)
+    const isFromGit = ModuleUtil.isFromGit(moduleSrc)
     let result
     if (isFromGit) {
       // todo should check node_module in a graceful way
@@ -167,7 +168,7 @@ module.exports = result\n`
       repo = ary[0]
       branch = ary[1]
     }
-    branch = branch || Cls.getDefaultRepo({owner, repo})
+    branch = branch || ModuleUtil.getDefaultRepo({owner, repo})
     return {
       owner, repo, branch
     }
@@ -176,7 +177,12 @@ module.exports = result\n`
     // const {owner, repo} = option
     return 'master'
   }
+  static updateYS (rootPath) {
+    throwIfNotRoot(rootPath)
+    const ysPath = path.resolve(rootPath, 'node_modules/@ys')
+    execSync(`rm -rf ${ysPath} && npm i`)
+  }
 }
 
-Object.freeze(Cls)
-module.exports = Cls
+Object.freeze(ModuleUtil)
+module.exports = ModuleUtil
