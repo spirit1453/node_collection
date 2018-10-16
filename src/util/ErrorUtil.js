@@ -1,15 +1,19 @@
+/* eslint-disable no-console,no-process-exit */
 
-class Cls {
-  static processGlobal (rejectionHandler, exceptionHandler) {
-    process.on('unhandledRejection', (err) => {
-      rejectionHandler(err)
-    })
-
+class ErrorUtil {
+  static exitOnUnexpected () {
     process.on('uncaughtException', (err) => {
-      exceptionHandler(err)
+      console.log({uncaughtException: err})
+      process.exit(1)
+    })
+    process.on('unhandledRejection', (err) => {
+      console.log({
+        unhaledRejection: err
+      })
+      process.exit(1)
     })
   }
 }
 
-Object.freeze(Cls)
-module.exports = Cls
+Object.freeze(ErrorUtil)
+module.exports = ErrorUtil
