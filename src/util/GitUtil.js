@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 
-class gitUtil {
+class GitUtil {
   static deleteBr (param) {
     'sdfsdf'
   }
@@ -15,7 +15,8 @@ class gitUtil {
         const {current, all} = obj
         const result = {
           name: current,
-          hasRemote: all.includes(`remotes/origin/${current}`)
+          hasRemote: all.includes(`remotes/origin/${current}`),
+          hasOrigin: all.some(ele => ele.startsWith('remotes/origin/'))
         }
         resolve(result)
       })
@@ -23,6 +24,6 @@ class gitUtil {
   }
 }
 
-Object.freeze(gitUtil)
+Object.freeze(GitUtil)
 
-module.exports = gitUtil
+module.exports = GitUtil
