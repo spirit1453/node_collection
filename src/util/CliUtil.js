@@ -57,7 +57,7 @@ class CliUtil {
     const defaultOption = {
       stdio: [process.stderr, process.stdin, process.stdout]
     }
-    childProcess.execSync(cmd, _.merge(defaultOption, option))
+    return childProcess.execSync(cmd, _.merge(defaultOption, option))
   }
   static async mergeOption ({argv, option = {}}) {
     const questionAry = []
