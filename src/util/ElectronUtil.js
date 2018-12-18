@@ -12,10 +12,11 @@ const {electronDistUrl, sqliteFileName} = constant
 
 class ElectronUtil {
   static installSqlite ({rootDir: _rootDir, shouldMoveToResource = true}) {
+    console.log(chalk.blue(`sqlite3 installing`))
     const electronVersion = ElectronUtil.getElectronVersion({rootDir: _rootDir})
     debug({electronVersion})
     const cmd = `npm i sqlite3 --runtime=electron --target=${electronVersion} --dist-url=${electronDistUrl}`
-    debug({cmd})
+    console.log(chalk.blue(cmd))
     childProcess.execSync(cmd)
 
     console.log(chalk.green(`sqlite3 installed successfully`))
