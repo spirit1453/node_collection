@@ -6,9 +6,10 @@ const chalk = require('chalk')
 const childProcess = require('child_process')
 const debug = require('debug')('debug')
 const semver = require('semver')
-const rootDir = path.resolve(__dirname, '..')
-const constant = require(path.resolve(rootDir, 'constant'))
+const constant = require('../../constant')
 const {electronDistUrl, sqliteFileName} = constant
+
+debug({constant})
 
 class ElectronUtil {
   static installSqlite ({rootDir: _rootDir, shouldMoveToResource = true}) {
