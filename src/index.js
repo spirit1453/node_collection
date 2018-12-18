@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 const result = {
   CliUtil: require('./util/CliUtil'),
+  ElectronUtil: require('./util/ElectronUtil'),
   ErrorUtil: require('./util/ErrorUtil'),
   FileUtil: require('./util/FileUtil'),
   GitHubUtil: require('./util/GitHubUtil'),
