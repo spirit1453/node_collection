@@ -8,6 +8,7 @@ const coverageIndex = path.resolve(coverage, 'lcov-report/index.html')
 if (!fs.existsSync(coverage)) {
   childProcess.execSync(`npm run test`)
 }
+
 try {
   childProcess.execSync(`chrome ${coverageIndex}`)
 } catch (err) {
