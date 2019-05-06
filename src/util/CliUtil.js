@@ -5,6 +5,7 @@ const inquirer = require('inquirer')
 
 class CliUtil {
   static checkOption (option) {
+
     // const questionAry = []
     // const param = {}
     //

@@ -6,6 +6,7 @@ const chalk = require('chalk')
 const childProcess = require('child_process')
 const debug = require('debug')('debug')
 const semver = require('semver')
+
 const constant = require('../../constant')
 const {electronDistUrl, sqliteFileName} = constant
 
