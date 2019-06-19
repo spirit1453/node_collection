@@ -2,6 +2,9 @@
 const childProcess = require('child_process')
 const _ = require('lodash')
 const inquirer = require('inquirer')
+const fs = require('fs')
+
+const FileUtil = require('./FileUtil')
 
 class CliUtil {
   static checkOption (option) {
@@ -163,6 +166,16 @@ class CliUtil {
       console.log()
     }
 
+  }
+  // if cmd is not install, return undefined
+  static getRealPathOfCmd(cmd) {
+    let result
+    if (CliUtil.isInstalled(cmd)) {
+      const cmdPath = CliUtil.getCmdResult(`which ${cmd}`)
+      result = FileUtil.getRealPath(cmdPath)
+    }
+
+    return result
   }
 }
 

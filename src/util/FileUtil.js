@@ -1,6 +1,7 @@
 const fse = require('fs-extra')
 const path = require('path')
-const {execSync} = require('./CliUtil')
+const {execSync} = require('child_process')
+const fs = require('fs')
 
 class FileUtil {
   static isRoot (folder) {
@@ -48,6 +49,18 @@ class FileUtil {
     execSync(`
        webstorm ${filepath}
       `)
+  }
+
+  static getRealPath(filePath) {
+    const isSymbolic = fs.lstatSync(gitPath).isSymbolicLink()
+
+    const result = {isSymbolic}
+    if(isSymbolic){
+      result.realPath = fs.realpathSync(gitPath)
+    } else {
+      result.realPath = filePath
+    }
+    return result
   }
 }
 
