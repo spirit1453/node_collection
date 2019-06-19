@@ -173,6 +173,7 @@ class CliUtil {
     if (CliUtil.isInstalled(cmd)) {
       const cmdPath = CliUtil.getCmdResult(`which ${cmd}`)
       result = FileUtil.getRealPath(cmdPath)
+      result.cmdPath = cmdPath
     }
 
     return result
