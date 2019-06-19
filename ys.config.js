@@ -2,7 +2,6 @@
 const ys = {
   argv: {
     git: {
-      pub: true
     }
   }
 }
