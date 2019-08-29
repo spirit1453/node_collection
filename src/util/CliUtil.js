@@ -88,13 +88,11 @@ class CliUtil {
     const defaultOption = {
       stdio: [process.stderr, process.stdin, process.stdout]
     }
-    info(`executing: ${cmd}`)
     return childProcess.execSync(cmd, _.merge(defaultOption, option))
   }
 
   static exec(cmd, option = {}) {
     return new Promise((resolve, reject) => {
-      info(`executing: ${cmd}`)
 
       const cp = childProcess.exec(cmd, _.merge({}, option), (error, stdout, stderr) => {
         const processError = (err) => {
