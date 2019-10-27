@@ -7,7 +7,8 @@ const result = {
   GitHubUtil: require('./util/GitHubUtil'),
   GitUtil: require('./util/GitUtil'),
   ModuleUtil: require('./util/ModuleUtil'),
-  SSHUtil: require('./util/SSHUtil')
+  SSHUtil: require('./util/SSHUtil'),
+  MysqlUtil: require('./util/MysqlUtil')
 }
 
 Object.freeze(result)
