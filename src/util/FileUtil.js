@@ -111,6 +111,10 @@ class FileUtil {
     }
     return result
   }
+
+  static getContent(filePath) {
+    return fs.readFileSync(filePath).toString().trim()
+  }
 }
 
 Object.freeze(FileUtil)

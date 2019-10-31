@@ -16,6 +16,18 @@ class MysqlUtil {
           })
       }
   }
+
+  static hasRecord(connection, sql, paramAry = []) {
+      const sqlResultAry = MysqlUtil.runSql(connection, sql, paramAry)
+
+      const result = {
+          hasRecord:  Boolean(sqlResultAry.length),
+          record: sqlResultAry[0],
+          sqlResultAry
+      }
+
+      return result
+  }
 }
 
 Object.freeze(MysqlUtil)
