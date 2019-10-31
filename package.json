@@ -10,6 +10,7 @@
     "axios": "^0.18.0",
     "cross-env": "^5.2.0",
     "fs-extra": "^7.0.0",
+    "ignore": "^5.1.4",
     "inquirer": "^6.2.0",
     "simple-git": "^1.107.0",
     "winston": "^3.1.0"

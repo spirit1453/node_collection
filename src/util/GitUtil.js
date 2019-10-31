@@ -1,6 +1,9 @@
 /* eslint-disable global-require */
 const uuid = require('uuid')
 const childProcess = require('child_process')
+const ignore = require('ignore')
+const fs = require('fs')
+const path = require('path')
 
 class GitUtil {
   static deleteBr (param) {
@@ -24,9 +27,9 @@ class GitUtil {
       })
     })
   }
-
+// if git ignored, return []
   static getGitLogInfo(option) {
-    const {projectDir, relPath} = option
+    const {projectDir, filePath} = option
     const seperator = uuid()
     const obj = {
       hash: {
@@ -51,7 +54,7 @@ class GitUtil {
 
     const formatStr = ary.join(seperator)
 
-    const cmd = `git log --format=format:"${formatStr}" ${relPath} `
+    const cmd = `git log --format=format:"${formatStr}" ${filePath} `
     const str = childProcess.execSync(cmd, {
       cwd: projectDir
     }).toString()
@@ -79,6 +82,30 @@ class GitUtil {
     })
 
     return resultAry
+  }
+
+  static isInGit(option) {
+    const {projectDir, relPath} = option
+
+      const ignorePath = path.resolve(projectDir, '.gitignore')
+    const ig = GitUtil.getIgnore(ignorePath)
+
+    return ig.ignores(relPath)
+  }
+
+  static getIgnore(ignorePath) {
+        const content = fs.readFileSync(ignorePath).toString()
+      const ig = ignore()
+
+      content.split('\n').forEach(ele => {
+          ele = ele.trim()
+
+          if (!ele.startsWith('#')) {
+              ig.add(ele)
+          }
+      })
+
+      return ig
   }
 }
 

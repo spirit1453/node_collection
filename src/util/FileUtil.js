@@ -2,6 +2,9 @@ const fse = require('fs-extra')
 const path = require('path')
 const {execSync} = require('child_process')
 const fs = require('fs')
+const chalk = require('chalk')
+
+const GitUtil = require('./GitUtil')
 
 class FileUtil {
   static isRoot (folder) {
@@ -59,6 +62,39 @@ class FileUtil {
       result.realPath = fs.realpathSync(gitPath)
     } else {
       result.realPath = filePath
+    }
+    return result
+  }
+
+  static scan(option) {
+    let fileCount = 0
+
+    const {projectDir, handleFileFunc} = option
+    const ignorePath = path.resolve(projectDir, '.gitignore')
+    const ig = GitUtil.getIgnore(ignorePath)
+
+    const recur = (dir) => {
+      const relPath = path.relative(projectDir, dir)
+      const shouldScan = (dir === projectDir || !ig.ignores(relPath)) && relPath !== '.git'
+      if (shouldScan) {
+        const stat = fs.statSync(dir)
+        if (stat.isDirectory()) {
+          fs.readdirSync(dir).forEach(ele => {
+            const elePath = path.resolve(dir, ele)
+            recur(elePath)
+          })
+        } else if (stat.isFile()) {
+          fileCount++
+          handleFileFunc(dir)
+        } else {
+          console.log(`${chalk.blue(dir)} is ${stat}`)
+        }
+      }
+    }
+
+    recur(projectDir)
+    const result = {
+      fileCount
     }
     return result
   }
