@@ -4,6 +4,7 @@ const childProcess = require('child_process')
 const ignore = require('ignore')
 const fs = require('fs')
 const path = require('path')
+const _ = require('lodash')
 
 class GitUtil {
   static deleteBr (param) {
@@ -118,6 +119,10 @@ class GitUtil {
 
     return result
   }
+    static getFolderNameFromGitUrl(url) {
+        return _.last(url.split('/')).split('.')[0]
+
+    }
 }
 GitUtil.getRemoteUrl('/Users/youngsmith/entry/code/working_on/QuickTest')
 Object.freeze(GitUtil)
