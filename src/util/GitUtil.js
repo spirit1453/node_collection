@@ -107,8 +107,19 @@ class GitUtil {
 
       return ig
   }
-}
 
+  static getRemoteUrl(projectDir) {
+    const cmd = `git remote -v`
+    const str = childProcess.execSync(cmd, {
+      cwd: projectDir
+    }).toString()
+
+    const result = str.split('(fetch)')[0].split('\t')[1].trim()
+
+    return result
+  }
+}
+GitUtil.getRemoteUrl('/Users/youngsmith/entry/code/working_on/QuickTest')
 Object.freeze(GitUtil)
 
 module.exports = GitUtil

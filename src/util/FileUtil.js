@@ -68,10 +68,15 @@ class FileUtil {
 
   static scan(option) {
     let fileCount = 0
+    let folderCount = 0
 
-    const {projectDir, handleFileFunc} = option
+    const {projectDir, handleFileFunc, handleFolderFunc, ignoreOptionAry = []} = option
     const ignorePath = path.resolve(projectDir, '.gitignore')
     const ig = GitUtil.getIgnore(ignorePath)
+
+    ignoreOptionAry.forEach(ele => {
+      ig.add(ele)
+    })
 
     const recur = (dir) => {
       const relPath = path.relative(projectDir, dir)
@@ -79,13 +84,20 @@ class FileUtil {
       if (shouldScan) {
         const stat = fs.statSync(dir)
         if (stat.isDirectory()) {
+          folderCount++
           fs.readdirSync(dir).forEach(ele => {
             const elePath = path.resolve(dir, ele)
             recur(elePath)
           })
+          if (handleFolderFunc) {
+            handleFolderFunc(dir)
+          }
+
         } else if (stat.isFile()) {
           fileCount++
-          handleFileFunc(dir)
+          if (handleFileFunc) {
+            handleFileFunc(dir)
+          }
         } else {
           console.log(`${chalk.blue(dir)} is ${stat}`)
         }
@@ -94,7 +106,8 @@ class FileUtil {
 
     recur(projectDir)
     const result = {
-      fileCount
+      fileCount,
+      folderCount
     }
     return result
   }
