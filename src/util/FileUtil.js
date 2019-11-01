@@ -70,7 +70,7 @@ class FileUtil {
     let fileCount = 0
     let folderCount = 0
 
-    const {projectDir, handleFileFunc, handleFolderFunc, ignoreOptionAry = []} = option
+    const {projectDir, handleFileFunc, ignoreOptionAry = []} = option
     const ignorePath = path.resolve(projectDir, '.gitignore')
     const ig = GitUtil.getIgnore(ignorePath)
 
@@ -85,19 +85,25 @@ class FileUtil {
         const stat = fs.statSync(dir)
         if (stat.isDirectory()) {
           folderCount++
+
+          if (handleFileFunc) {
+            await handleFileFunc(dir, {
+              isFolder: true
+            })
+          }
           for(let ele of fs.readdirSync(dir)){
             const elePath = path.resolve(dir, ele)
             await recur(elePath)
           }
 
-          if (handleFolderFunc) {
-            await handleFolderFunc(dir)
-          }
+
 
         } else if (stat.isFile()) {
           fileCount++
           if (handleFileFunc) {
-            await handleFileFunc(dir)
+            await handleFileFunc(dir, {
+              isFolder: false
+            })
           }
         } else {
           console.log(`${chalk.blue(dir)} is ${stat}`)
