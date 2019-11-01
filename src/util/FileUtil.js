@@ -66,7 +66,7 @@ class FileUtil {
     return result
   }
 
-  static scan(option) {
+  static async scan(option) {
     let fileCount = 0
     let folderCount = 0
 
@@ -78,25 +78,26 @@ class FileUtil {
       ig.add(ele)
     })
 
-    const recur = (dir) => {
+    const recur = async (dir) => {
       const relPath = path.relative(projectDir, dir)
       const shouldScan = (dir === projectDir || !ig.ignores(relPath)) && relPath !== '.git'
       if (shouldScan) {
         const stat = fs.statSync(dir)
         if (stat.isDirectory()) {
           folderCount++
-          fs.readdirSync(dir).forEach(ele => {
+          for(let ele of fs.readdirSync(dir)){
             const elePath = path.resolve(dir, ele)
-            recur(elePath)
-          })
+            await recur(elePath)
+          }
+
           if (handleFolderFunc) {
-            handleFolderFunc(dir)
+            await handleFolderFunc(dir)
           }
 
         } else if (stat.isFile()) {
           fileCount++
           if (handleFileFunc) {
-            handleFileFunc(dir)
+            await handleFileFunc(dir)
           }
         } else {
           console.log(`${chalk.blue(dir)} is ${stat}`)
@@ -104,7 +105,7 @@ class FileUtil {
       }
     }
 
-    recur(projectDir)
+    await recur(projectDir)
     const result = {
       fileCount,
       folderCount

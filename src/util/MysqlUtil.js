@@ -17,8 +17,8 @@ class MysqlUtil {
       }
   }
 
-  static hasRecord(connection, sql, paramAry = []) {
-      const sqlResultAry = MysqlUtil.runSql(connection, sql, paramAry)
+  static async hasRecord(connection, sql, paramAry = []) {
+      const sqlResultAry = await MysqlUtil.runSql(connection, sql, paramAry)
 
       const result = {
           hasRecord:  Boolean(sqlResultAry.length),
