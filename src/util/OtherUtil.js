@@ -1,4 +1,5 @@
 const chalk = require('chalk')
+const _ = require('lodash')
 
 class OtherUtil {
     static parseUrl(url) {
