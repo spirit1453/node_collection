@@ -124,7 +124,7 @@ class GitUtil {
 
     }
 }
-GitUtil.getRemoteUrl('/Users/youngsmith/entry/code/working_on/QuickTest')
+
 Object.freeze(GitUtil)
 
 module.exports = GitUtil
