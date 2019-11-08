@@ -86,7 +86,7 @@ class CliUtil {
 
   static execSync (cmd, option = {}) {
     const defaultOption = {
-      stdio: [process.stderr, process.stdin, process.stdout]
+      stdio: 'inherit'
     }
     return childProcess.execSync(cmd, _.merge(defaultOption, option))
   }
