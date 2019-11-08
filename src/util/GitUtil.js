@@ -125,6 +125,7 @@ class GitUtil {
     }
 }
 
+
 Object.freeze(GitUtil)
 
 module.exports = GitUtil
