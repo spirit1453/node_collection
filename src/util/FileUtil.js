@@ -3,6 +3,8 @@ const path = require('path')
 const {execSync} = require('child_process')
 const fs = require('fs')
 const chalk = require('chalk')
+const ignore = require('ignore')
+const {isBinaryFileSync} = require("isbinaryfile")
 
 const GitUtil = require('./GitUtil')
 
@@ -69,10 +71,19 @@ class FileUtil {
   static async scan(option) {
     let fileCount = 0
     let folderCount = 0
+    let binaryFileCount = 0
+    let textFileCount = 0
 
     const {projectDir, handleFileFunc, ignoreOptionAry = []} = option
+
     const ignorePath = path.resolve(projectDir, '.gitignore')
-    const ig = GitUtil.getIgnore(ignorePath)
+    let ig
+
+    if (fs.existsSync(ignorePath)) {
+      ig = GitUtil.getIgnore(ignorePath)
+    } else {
+      ig = ignore()
+    }
 
     ignoreOptionAry.forEach(ele => {
       ig.add(ele)
@@ -82,23 +93,31 @@ class FileUtil {
       const relPath = path.relative(projectDir, dir)
       const shouldScan = (dir === projectDir || !ig.ignores(relPath)) && relPath !== '.git'
       if (shouldScan) {
-        const stat = fs.statSync(dir)
+        // do not follow link
+        const stat = fs.lstatSync(dir)
         if (stat.isDirectory()) {
           folderCount++
 
+          let handleFolderResult
           if (handleFileFunc) {
-            await handleFileFunc(dir, {
+            handleFolderResult =  await handleFileFunc(dir, {
               isFolder: true
             })
           }
-          for(let ele of fs.readdirSync(dir)){
-            const elePath = path.resolve(dir, ele)
-            await recur(elePath)
+
+          if (!(handleFolderResult !== undefined && handleFolderResult === false)) {
+            for(let ele of fs.readdirSync(dir)){
+              const elePath = path.resolve(dir, ele)
+              await recur(elePath)
+            }
           }
-
-
-
         } else if (stat.isFile()) {
+          const isBinary = isBinaryFileSync(dir)
+          if (isBinary) {
+            binaryFileCount++
+          } else {
+            textFileCount++
+          }
           fileCount++
           if (handleFileFunc) {
             await handleFileFunc(dir, {
@@ -106,7 +125,7 @@ class FileUtil {
             })
           }
         } else {
-          console.log(`${chalk.blue(dir)} is ${stat}`)
+          // console.log(`${chalk.blue(dir)} is ${stat.isSymbolicLink() ? 'symbolic link' : 'unknown'}`)
         }
       }
     }
@@ -114,7 +133,9 @@ class FileUtil {
     await recur(projectDir)
     const result = {
       fileCount,
-      folderCount
+      folderCount,
+      binaryFileCount,
+      textFileCount
     }
     return result
   }

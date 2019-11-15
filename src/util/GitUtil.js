@@ -123,6 +123,28 @@ class GitUtil {
         return _.last(url.split('/')).split('.')[0]
 
     }
+
+    static isGitRepo(dir) {
+      let result = true
+
+      const gitDir = path.resolve(dir, '.git')
+
+      if(!fs.existsSync(gitDir)) {
+        result = false
+      }
+
+      // const cmd = `git status`
+      // try {
+      //   childProcess.execSync(cmd, {
+      //     cwd: dir
+      //   })
+      // } catch(error) {
+      //   result = false
+      // }
+
+      return result
+
+    }
 }
 
 
