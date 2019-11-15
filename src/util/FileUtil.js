@@ -73,6 +73,8 @@ class FileUtil {
     let folderCount = 0
     let binaryFileCount = 0
     let textFileCount = 0
+    let symbolicCount = 0
+    let unknownCount = 0
 
     const {projectDir, handleFileFunc, ignoreOptionAry = []} = option
 
@@ -101,7 +103,7 @@ class FileUtil {
           let handleFolderResult
           if (handleFileFunc) {
             handleFolderResult =  await handleFileFunc(dir, {
-              isFolder: true
+              isFolder: true,
             })
           }
 
@@ -121,10 +123,16 @@ class FileUtil {
           fileCount++
           if (handleFileFunc) {
             await handleFileFunc(dir, {
-              isFolder: false
+              isFile: true,
+              isBinary
             })
           }
         } else {
+          if (stat.isSymbolicLink() ) {
+            symbolicCount++
+          } else {
+            unknownCount++
+          }
           // console.log(`${chalk.blue(dir)} is ${stat.isSymbolicLink() ? 'symbolic link' : 'unknown'}`)
         }
       }
@@ -135,7 +143,9 @@ class FileUtil {
       fileCount,
       folderCount,
       binaryFileCount,
-      textFileCount
+      textFileCount,
+      symbolicCount,
+      unknownCount
     }
     return result
   }
