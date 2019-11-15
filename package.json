@@ -12,6 +12,7 @@
     "fs-extra": "^7.0.0",
     "ignore": "^5.1.4",
     "inquirer": "^6.2.0",
+    "isbinaryfile": "^4.0.2",
     "simple-git": "^1.107.0",
     "winston": "^3.1.0"
   },
