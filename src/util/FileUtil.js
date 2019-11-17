@@ -69,6 +69,8 @@ class FileUtil {
   }
 
   static async scan(option) {
+    const {projectDir, handleFileFunc, ignoreOptionAry = []} = option
+
     let fileCount = 0
     let folderCount = 0
     let binaryFileCount = 0
@@ -76,7 +78,6 @@ class FileUtil {
     let symbolicCount = 0
     let unknownCount = 0
 
-    const {projectDir, handleFileFunc, ignoreOptionAry = []} = option
 
     const ignorePath = path.resolve(projectDir, '.gitignore')
     let ig
