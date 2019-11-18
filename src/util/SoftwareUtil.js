@@ -1,13 +1,15 @@
+const SystemUtil = require('./SystemUtil')
 
 class SoftwareUtil {
-  static uninstallFromPath(cmd) {
-
+  static getChromePath() {
+    let result
+    if (SystemUtil.isMac()) {
+      result = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    } else {
+      throw new Error(`not supported`)
+    }
+    return result
   }
-
-  static isCli(type) {
-    return type === 'cli'
-  }
-
 }
 
 Object.freeze(SoftwareUtil)
