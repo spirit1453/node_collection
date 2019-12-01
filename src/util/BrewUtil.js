@@ -3,7 +3,7 @@ const fs = require('fs')
 const verbose = require('debug')('verbose')
 const childProcess = require('child_process')
 
-const CmdUtil = require('../util/CmdUtil')
+const CmdUtil = require('../util/CliUtil')
 const SystemUtil = require('./SystemUtil')
 // const brewConfig = require('../../../config/brewConfig')
 
