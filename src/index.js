@@ -14,9 +14,10 @@ const result = {
   OpenUtil: require('./util/OpenUtil'),
   OtherUtil: require('./util/OtherUtil'),
   PathUtil: require('./util/PathUtil'),
-  SSHUtil: require('./util/SSHUtil'),
   SoftwareUtil: require('./util/SoftwareUtil'),
-  SystemUtil: require('./util/SystemUtil')
+  SSHUtil: require('./util/SSHUtil'),
+  SystemUtil: require('./util/SystemUtil'),
+  WindowsUtil: require('./util/WindowsUtil')
 }
 
 Object.freeze(result)

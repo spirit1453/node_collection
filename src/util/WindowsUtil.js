@@ -1,3 +1,7 @@
+const os = require('os')
+
+const CmdUtil = require('./CliUtil')
+const SystemUtil = require('./SystemUtil')
 
 class WindowsUtil {
   static getWinDiskAry() {
