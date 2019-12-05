@@ -3,7 +3,7 @@ const os = require('os')
 const fse = require('fs-extra')
 
 const SystemUtil = require('../util/SystemUtil')
-// const config = require('../../../config')
+const config = require('../../config')
 
 class PathUtil {
     static getEntryFolderPath() {
