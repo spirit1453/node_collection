@@ -17,6 +17,7 @@ const result = {
   SoftwareUtil: require('./util/SoftwareUtil'),
   SSHUtil: require('./util/SSHUtil'),
   SystemUtil: require('./util/SystemUtil'),
+  UnifyUtil: require('./util/UnifyUtil'),
   WindowsUtil: require('./util/WindowsUtil')
 }
 
