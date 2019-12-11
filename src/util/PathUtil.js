@@ -2,14 +2,15 @@ const path = require('path')
 const os = require('os')
 const fse = require('fs-extra')
 
-const SystemUtil = require('../util/SystemUtil')
+const SystemUtil = require('./SystemUtil')
+const WindowsUtil = require('./WindowsUtil')
 const config = require('../../config')
 
 class PathUtil {
     static getEntryFolderPath() {
         let result
         if (SystemUtil.isWindows()) {
-            const diskAry = SystemUtil.getWinDiskList()
+            const diskAry = WindowsUtil.getWinDiskAry()
             let disk = 'C'
             const nonSystemDisk = 'D'
             if(diskAry.includes(nonSystemDisk)) {

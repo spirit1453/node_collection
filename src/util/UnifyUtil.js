@@ -21,6 +21,24 @@ class UnifyUtil {
 
     return cmd
   }
+
+   static openFilePath(filePath, option = {}) {
+      const {shouldExecute = true} = option
+      let cmd
+      if (SystemUtil.isWindows()) {
+        cmd = `explorer "${filePath}"`
+      } else {
+        cmd = `
+            open "${filePath}"
+          `
+      }
+      if (shouldExecute) {
+        childProcess.execSync(cmd, {
+          stdio: 'inherit'
+        })
+      }
+      return cmd
+    }
 }
 
 Object.freeze(UnifyUtil)
