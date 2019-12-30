@@ -56,6 +56,17 @@ class PathUtil {
         }
         return dir
     }
+
+    static getAbsPath(content) {
+        let result
+        if (path.isAbsolute(content)) {
+            result = content
+        } else {
+            result = path.resolve(process.cwd(), content)
+        }
+
+        return result
+    }
 }
 
 module.exports = PathUtil

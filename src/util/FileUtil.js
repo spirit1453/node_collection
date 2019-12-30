@@ -7,6 +7,7 @@ const ignore = require('ignore')
 const {isBinaryFileSync} = require("isbinaryfile")
 
 const GitUtil = require('./GitUtil')
+const PathUtil = require('./PathUtil')
 
 class FileUtil {
   static isRoot (folder) {
@@ -152,7 +153,7 @@ class FileUtil {
   }
 
   static getContent(filePath) {
-    return fs.readFileSync(filePath).toString().trim()
+    return fs.readFileSync(PathUtil.getAbsPath(filePath)).toString().trim()
   }
 }
 

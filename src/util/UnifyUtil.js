@@ -1,4 +1,5 @@
 const childProcess = require('child_process')
+const path = require('path')
 
 const SystemUtil = require('./SystemUtil')
 
@@ -28,9 +29,16 @@ class UnifyUtil {
       if (SystemUtil.isWindows()) {
         cmd = `explorer "${filePath}"`
       } else {
-        cmd = `
+          if (path.isAbsolute(filePath)) {
+              cmd = `
             open "${filePath}"
           `
+          } else {
+              cmd = `
+            open ${filePath}
+          `
+          }
+        
       }
       if (shouldExecute) {
         childProcess.execSync(cmd, {
