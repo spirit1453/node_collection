@@ -3,6 +3,7 @@ const childProcess = require('child_process')
 const _ = require('lodash')
 const inquirer = require('inquirer')
 const fs = require('fs')
+const chalk = require('chalk')
 
 const FileUtil = require('./FileUtil')
 
@@ -85,10 +86,14 @@ class CliUtil {
   }
 
   static execSync (cmd, option = {}) {
+    const {shouldLog = true}  = option
     const defaultOption = {
       stdio: 'inherit'
     }
-    return childProcess.execSync(cmd, _.merge(defaultOption, option))
+    if (shouldLog) {
+        console.log(chalk.blue(cmd))
+    }
+    return childProcess.execSync(cmd, defaultOption)
   }
 
   static exec(cmd, option = {}) {
