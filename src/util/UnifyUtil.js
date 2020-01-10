@@ -9,8 +9,7 @@ class UnifyUtil {
     const {shouldExecute = true, shouldLog = false} = option
     let cmd
     if (SystemUtil.isWindows()) {
-//      cmd = `start chrome.exe "${url}"`
-      cmd = `start microsoft-edge:${url}`
+      cmd = `start chrome.exe "${url}"`
         if (shouldExecute) {
             try {
                  childProcess.execSync(cmd)
