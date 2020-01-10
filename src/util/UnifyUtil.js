@@ -12,14 +12,10 @@ class UnifyUtil {
       cmd = `start chrome.exe "${url}"`
         if (shouldExecute) {
             try {
-                 childProcess.execSync(cmd, {
-                              stdio: 'inherit'
-                            })
+                 childProcess.execSync(cmd)
             } catch(error) {
                 cmd = `start microsoft-edge:${url}`
-                childProcess.execSync(cmd, {
-                                          stdio: 'inherit'
-                                        })
+                childProcess.execSync(cmd)
             }
           }
     } else {
