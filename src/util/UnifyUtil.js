@@ -1,11 +1,12 @@
 const childProcess = require('child_process')
 const path = require('path')
+const chalk = require('chalk')
 
 const SystemUtil = require('./SystemUtil')
 
 class UnifyUtil {
   static openUrl(url, option = {}) {
-    const {shouldExecute = true} = option
+    const {shouldExecute = true, shouldLog = false} = option
     let cmd
     if (SystemUtil.isWindows()) {
       cmd = `start chrome.exe "${url}"`
@@ -32,6 +33,9 @@ class UnifyUtil {
             }
     }
 
+    if (shouldLog) {
+         console.log(chalk.blue(cmd.trim()))
+    }
 
     return cmd
   }

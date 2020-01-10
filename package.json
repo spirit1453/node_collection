@@ -8,6 +8,7 @@
   "dependencies": {
     "@ys/vanilla": "github:spirit1453/vanilla_js#publish",
     "axios": "^0.18.0",
+    "chalk": "^3.0.0",
     "cross-env": "^5.2.0",
     "fs-extra": "^7.0.0",
     "ignore": "^5.1.4",
