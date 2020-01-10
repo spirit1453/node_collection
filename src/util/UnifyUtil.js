@@ -14,6 +14,7 @@ class UnifyUtil {
             try {
                  childProcess.execSync(cmd)
             } catch(error) {
+                // fixme: windows still popup error window
                 cmd = `start microsoft-edge:${url}`
                 childProcess.execSync(cmd, {
                                           stdio: 'inherit'
