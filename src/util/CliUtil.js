@@ -86,14 +86,17 @@ class CliUtil {
   }
 
   static execSync (cmd, option = {}) {
-    const {shouldLog = true}  = option
+    const {
+        shouldLog = true,
+        execOption = {}
+    }  = option
     const defaultOption = {
       stdio: 'inherit'
     }
     if (shouldLog) {
         console.log(chalk.blue(cmd))
     }
-    return childProcess.execSync(cmd, defaultOption)
+    return childProcess.execSync(cmd, _.merge(defaultOption, execOption))
   }
 
   static exec(cmd, option = {}) {
