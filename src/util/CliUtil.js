@@ -6,6 +6,7 @@ const fs = require('fs')
 const chalk = require('chalk')
 
 const FileUtil = require('./FileUtil')
+const SystemUtil = require('./SystemUtil')
 
 class CliUtil {
   static checkOption (option) {
@@ -134,17 +135,16 @@ class CliUtil {
     let result = true
     try {
       let testCmd
-      if (os.platform() === 'win32') {
+      // fixme: os is not defined, auto refactoring
+      if (SystemUtil.isWindows()) {
         testCmd = `where ${cmd}`
       } else {
         testCmd = `which ${cmd}`
       }
       childProcess.execSync(testCmd)
-      if(alertInstalled) {
-        verbose(`${cmd} has already been installed`)
-      }
+
     } catch(err) {
-      console.log(err.stderr.toString())
+      console.log(err)
       result = false
     }
     return result
