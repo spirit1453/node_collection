@@ -15,8 +15,10 @@ class PathUtil {
             const nonSystemDisk = 'D'
             if(diskAry.includes(nonSystemDisk)) {
                 disk = nonSystemDisk
+                 result = path.resolve(`${disk}://`, 'entry')
+            } else {
+                result = path.resolve(os.homedir(), config.entryFolderName)
             }
-            result = path.resolve(`${disk}://`, 'entry')
         } else {
             result = path.resolve(os.homedir(), config.entryFolderName)
         }
