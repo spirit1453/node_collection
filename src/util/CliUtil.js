@@ -144,7 +144,7 @@ class CliUtil {
       childProcess.execSync(testCmd)
 
     } catch(err) {
-      console.log(err)
+      // console.log(err)
       result = false
     }
     return result
