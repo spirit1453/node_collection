@@ -9,6 +9,7 @@ const config = require('../../config')
 class PathUtil {
     static getEntryFolderPath() {
         let result
+
         if (SystemUtil.isWindows()) {
             const diskAry = WindowsUtil.getWinDiskAry()
             let disk = 'C'
