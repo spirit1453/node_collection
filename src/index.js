@@ -14,8 +14,9 @@ const result = {
   OpenUtil: require('./util/OpenUtil'),
   OtherUtil: require('./util/OtherUtil'),
   PathUtil: require('./util/PathUtil'),
-  SoftwareUtil: require('./util/SoftwareUtil'),
   SSHUtil: require('./util/SSHUtil'),
+  SoftwareUtil: require('./util/SoftwareUtil'),
+  SpecUtil: require('./util/SpecUtil'),
   SystemUtil: require('./util/SystemUtil'),
   UnifyUtil: require('./util/UnifyUtil'),
   WindowsUtil: require('./util/WindowsUtil')
