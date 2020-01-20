@@ -9,6 +9,24 @@ const FileUtil = require('./FileUtil')
 const SystemUtil = require('./SystemUtil')
 
 class CliUtil {
+  static getCmdEntryPath(cmdEntry) {
+    let result
+    try {
+      let cmd 
+      if (SystemUtil.isWindows()) {
+        cmd = `where ${cmdEntry}` 
+      } else {
+        cmd = `which ${cmdEntry}`
+      }
+      // console.log(cmd)
+      result = childProcess.execSync(cmd).toString().trim()
+    } catch(error) {
+      console.log(error)
+    }
+
+    return result
+  }
+
   static checkOption (option) {
 
     // const questionAry = []
