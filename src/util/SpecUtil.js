@@ -67,6 +67,7 @@ class SpecUtil {
 
         } else {
           console.log(`Type ${chalk.red(type)} is not supported, \n${optionSupported}`)
+          SpecUtil.open(filename)
         }
       } else  {
         if (defaultAction) {
@@ -128,7 +129,10 @@ class SpecUtil {
           if (_.isString(defaultAction)) {
             UnifyUtil.openUrl(defaultAction)
           } else if (_.isFunction(defaultAction)) {
-            defaultAction()
+             const url = defaultAction(argv._.slice(2))
+                        if (url) {
+                           UnifyUtil.openUrl(url)
+                        }
           } else {
             console.log(`${chalk.red(defaultAction)} is not function or string`)
           }

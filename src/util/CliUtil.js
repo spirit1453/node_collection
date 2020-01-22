@@ -9,6 +9,34 @@ const FileUtil = require('./FileUtil')
 const SystemUtil = require('./SystemUtil')
 
 class CliUtil {
+  static haveSthToCommit(cwd) {
+        let execOption = {}
+        if (cwd) {
+            execOption.cwd = cwd
+        }
+        const statusStr = CliUtil.getCmdResult('git status', {
+            execOption
+        })
+        return !statusStr.includes('nothing to commit')
+  }
+  static getCmdEntryPath(cmdEntry) {
+    let result
+    try {
+      let cmd 
+      if (SystemUtil.isWindows()) {
+        cmd = `where ${cmdEntry}` 
+      } else {
+        cmd = `which ${cmdEntry}`
+      }
+      // console.log(cmd)
+      result = childProcess.execSync(cmd).toString().trim()
+    } catch(error) {
+      console.log(error)
+    }
+
+    return result
+  }
+
   static checkOption (option) {
 
     // const questionAry = []
