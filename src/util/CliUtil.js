@@ -22,9 +22,9 @@ class CliUtil {
   static getCmdEntryPath(cmdEntry) {
     let result
     try {
-      let cmd 
+      let cmd
       if (SystemUtil.isWindows()) {
-        cmd = `where ${cmdEntry}` 
+        cmd = `where ${cmdEntry}`
       } else {
         cmd = `which ${cmdEntry}`
       }
