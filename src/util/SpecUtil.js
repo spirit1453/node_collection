@@ -16,7 +16,9 @@ const config = require(path.resolve(rootPath, 'config'))
 class SpecUtil {
   static open(itemPath, option={}) {
     let {shouldLog = true, cmdEntry} = option
-    cmdEntry = cmdEntry || ['idea', 'code'].find(ele => CliUtil.isInstalled(ele))
+        if (!cmdEntry || !(typeof cmdEntry === 'string')) {
+            cmdEntry = ['idea', 'code'].find(ele => CliUtil.isInstalled(ele))
+        }
     if (cmdEntry) {
          const cmd = `${cmdEntry} ${FileUtil.getAbsolutePath(itemPath)}`
 
