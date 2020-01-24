@@ -46,7 +46,8 @@ class PathUtil {
     }
 
     static getWorkingOnFolder() {
-        return PathUtil.process(path.resolve(PathUtil.getEntryFolderPath(), config.codeFolderName, config.workingOnFolderName))
+//        console.log(PathUtil.getEntryFolderPath(), config.codeFolderName, config.workingOnFolderName)
+        return PathUtil.process(path.resolve(PathUtil.getEntryFolderPath(), config.codeFolderName || 'code', config.workingOnFolderName || 'working_on'))
     }
 
     // all folders get from the methods will be ensured to exist
