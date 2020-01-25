@@ -115,6 +115,8 @@ class SpecUtil {
             }
           } else {
             console.log(`${chalk.red(typeof(value))} for ${chalk.red(value)} is not supported`)
+            SpecUtil.open(filename)
+
           }
           if (url) {
             UnifyUtil.openUrl(url, {
@@ -125,6 +127,8 @@ class SpecUtil {
 
         } else {
           console.log(`Type ${chalk.red(type)} has no value, \n${optionSupported}`)
+                      SpecUtil.open(filename)
+
         }
       } else  {
         if (!listAllOption && defaultAction) {
