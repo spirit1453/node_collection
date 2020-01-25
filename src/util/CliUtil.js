@@ -17,6 +17,7 @@ class CliUtil {
         const statusStr = CliUtil.getCmdResult('git status', {
             execOption
         })
+//        console.log(statusStr)
         return !statusStr.includes('nothing to commit')
   }
   static getCmdEntryPath(cmdEntry) {
@@ -178,8 +179,11 @@ class CliUtil {
     return result
   }
 
-  static getCmdResult(cmd) {
-    return childProcess.execSync(cmd).toString().trim()
+  static getCmdResult(cmd, option = {}) {
+    const {
+    execOption = {}
+    } = option
+    return childProcess.execSync(cmd, execOption).toString().trim()
   }
 
   static printSepLine(title, option = {}) {

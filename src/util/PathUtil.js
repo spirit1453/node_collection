@@ -7,6 +7,20 @@ const WindowsUtil = require('./WindowsUtil')
 const config = require('../../config')
 
 class PathUtil {
+
+    static getIdeaConfigPath() {
+        let result
+
+        const ideaProductId = 'IdeaIC'
+        const version = '2019.3'
+        const generalId = ideaProductId + version
+        if(SystemUtil.isMac()){
+            result = path.resolve(os.homedir(), 'Library/Preferences', generalId)
+        } else {
+            result = path.resolve(os.homedir(), `.${generalId}`, 'config' )
+        }
+        return result
+    }
     static getEntryFolderPath() {
         let result
 

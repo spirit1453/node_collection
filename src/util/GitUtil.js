@@ -6,7 +6,20 @@ const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
 
+// todo: fix dependency cycling
+//const CliUtil = require('./CliUtil')
+
 class GitUtil {
+//    static haveSthToCommit(cwd) {
+//            let execOption = {}
+//            if (cwd) {
+//                execOption.cwd = cwd
+//            }
+//            const statusStr = CliUtil.getCmdResult('git status', {
+//                execOption
+//            })
+//            return !statusStr.includes('nothing to commit')
+//      }
   static deleteBr (param) {
 
   }
