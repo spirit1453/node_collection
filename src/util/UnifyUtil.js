@@ -22,9 +22,16 @@ class UnifyUtil {
             }
           }
     } else {
-      cmd = `
-          open "${url}"
-        `
+      const chromeMacLocation = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+
+      if (SystemUtil.isMac() && fs.existsSync(chromeMacLocation)) {
+        cmd = `${chromeMacLocation} ${url}`
+      } else {
+          cmd = `
+                  open "${url}"
+                `
+      }
+
           if (shouldExecute) {
               childProcess.execSync(cmd, {
                 stdio: 'inherit'
