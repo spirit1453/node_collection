@@ -26,7 +26,7 @@ class UnifyUtil {
       const chromeMacLocation = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
       if (SystemUtil.isMac() && fs.existsSync(chromeMacLocation)) {
-        cmd = `${chromeMacLocation} ${url}`
+        cmd = `"${chromeMacLocation}" "${url}"`
       } else {
           cmd = `
                   open "${url}"
