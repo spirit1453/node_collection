@@ -6,14 +6,23 @@ const SystemUtil = require('./SystemUtil')
 const WindowsUtil = require('./WindowsUtil')
 const config = require('../../config')
 
-class PathUtil {
+const ideaProductId = 'IdeaIC'
+const version = '2019.3'
+const generalId = ideaProductId + version
 
+class PathUtil {
+    static getIdeaPluginPath() {
+         let result
+
+                if(SystemUtil.isMac()){
+                    result = path.resolve(os.homedir(), 'Library/Application Support', generalId)
+                } else {
+                }
+                return result
+    }
     static getIdeaConfigPath() {
         let result
 
-        const ideaProductId = 'IdeaIC'
-        const version = '2019.3'
-        const generalId = ideaProductId + version
         if(SystemUtil.isMac()){
             result = path.resolve(os.homedir(), 'Library/Preferences', generalId)
         } else {
