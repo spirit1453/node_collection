@@ -11,6 +11,17 @@ const version = '2019.3'
 const generalId = ideaProductId + version
 
 class PathUtil {
+     static getIdeaHome() {
+            let result
+
+                    if(SystemUtil.isMac()){
+                        result = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA Community Edition ' + version
+                    } else {
+                        result = path.resolve(os.homedir(), `.${generalId}`, 'config' )
+                    }
+                    return result
+
+        }
     static getIdeaPluginPath() {
          let result
 
