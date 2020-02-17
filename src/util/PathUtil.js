@@ -11,6 +11,17 @@ const version = '2019.3'
 const generalId = ideaProductId + version
 
 class PathUtil {
+     static getVscodePlugin() {
+         let result
+
+         if(SystemUtil.isWindows()){
+             result = ''
+         } else {
+             result = path.resolve(os.homedir(), '.vscode/extensions')
+         }
+
+         return result
+     }
      static getIdeaHome() {
             let result
 
