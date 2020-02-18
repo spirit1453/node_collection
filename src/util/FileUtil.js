@@ -5,6 +5,7 @@ const fs = require('fs')
 const chalk = require('chalk')
 const ignore = require('ignore')
 const {isBinaryFileSync} = require("isbinaryfile")
+const axios = require('axios')
 
 const GitUtil = require('./GitUtil')
 const PathUtil = require('./PathUtil')
@@ -154,6 +155,20 @@ class FileUtil {
 
   static getContent(filePath) {
     return fs.readFileSync(PathUtil.getAbsPath(filePath)).toString().trim()
+  }
+
+  static async getContentFromUrl(filePath) {
+    let result
+     const isWebUrl = /^https?:\/\//.test(filePath)
+//    console.log(isWebUrl)
+     if (isWebUrl) {
+          const {data} = await axios.get(filePath)
+          result = data
+     } else {
+        result = FileUtil.getFileContent(filePath)
+     }
+
+     return result
   }
 }
 
