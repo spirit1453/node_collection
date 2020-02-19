@@ -3,6 +3,7 @@ const childProcess = require('child_process')
 const _ = require('lodash')
 const path = require('path')
 const fs = require('fs')
+const clipboardy = require('clipboardy')
 
 const FileUtil = require('./FileUtil')
 const UnifyUtil = require('./UnifyUtil')
@@ -91,7 +92,8 @@ class SpecUtil {
     const {kvMap, argv, filename, defaultAction} = option
 
     const type = argv._[1]
-    const {e: shouldEdit, s: shouldBeSilent, l: listAllOption} = argv
+    // console.log(argv)
+    const {e: shouldEdit, s: shouldBeSilent, l: listAllOption, c:shouldCopy} = argv
     if (shouldEdit) {
       const cmd = `idea ${filename}`
       childProcess.execSync(cmd, {
@@ -119,6 +121,9 @@ class SpecUtil {
 
           }
           if (url) {
+            if (shouldCopy) {
+              clipboardy.writeSync(url)
+            }
             UnifyUtil.openUrl(url, {
                             shouldExecute: !shouldBeSilent,
                             shouldLog: true
