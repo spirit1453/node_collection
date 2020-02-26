@@ -104,7 +104,7 @@ class SpecUtil {
         return `${index + 1}. ${ele}\n`
       }).join('')
       const optionSupported = `\n${chalk.blue(indexContent)} are supported`
-      if (type) {
+      if (type && kvMap.hasOwnProperty(type)) {
         const value = kvMap[type]
         if (value) {
           let url
@@ -116,9 +116,8 @@ class SpecUtil {
                 return
             }
           } else {
-            console.log(`${chalk.red(typeof(value))} for ${chalk.red(value)} is not supported`)
-            SpecUtil.open(filename)
-
+             console.log(`${chalk.red(typeof(value))} for ${chalk.red(value)} is not supported`)
+                            SpecUtil.open(filename)
           }
           if (url) {
             if (shouldCopy) {
@@ -137,22 +136,26 @@ class SpecUtil {
         }
       } else  {
         if (!listAllOption && defaultAction) {
-          if (_.isString(defaultAction)) {
-            UnifyUtil.openUrl(defaultAction)
-          } else if (_.isFunction(defaultAction)) {
-             const url = defaultAction(argv._.slice(2))
-                        if (url) {
-                           UnifyUtil.openUrl(url)
-                        }
-          } else {
-            console.log(`${chalk.red(defaultAction)} is not function or string`)
-          }
+          SpecUtil.processDefault(defaultAction, argv)
         } else {
           console.log(`Type should be specified as the third parameter, ${optionSupported}`)
         }
       }
     }
   }
+
+   static processDefault(defaultAction, argv) {
+    if (_.isString(defaultAction)) {
+                UnifyUtil.openUrl(defaultAction)
+              } else if (_.isFunction(defaultAction)) {
+                 const url = defaultAction(argv._.slice(1))
+                            if (url) {
+                               UnifyUtil.openUrl(url)
+                            }
+              } else {
+                console.log(`${chalk.red(defaultAction)} is not function or string`)
+              }
+   }
 
   static checkThirdArg(argv, option = {}) {
     const {

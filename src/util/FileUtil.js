@@ -162,12 +162,15 @@ class FileUtil {
      const isWebUrl = /^https?:\/\//.test(filePath)
 //    console.log(isWebUrl)
      if (isWebUrl) {
-          const {data} = await axios.get(filePath)
-          result = data
+          let {data} = await axios.get(filePath)
+          if(typeof data === 'object') {
+            data = JSON.stringify(data)
+          }
+          result = data.trim()
      } else {
         result = FileUtil.getFileContent(filePath)
      }
-
+//     console.log(result)
      return result
   }
 }
