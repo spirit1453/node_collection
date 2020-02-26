@@ -138,7 +138,11 @@ class SpecUtil {
         if (!listAllOption && defaultAction) {
           SpecUtil.processDefault(defaultAction, argv)
         } else {
-          console.log(`Type should be specified as the third parameter, ${optionSupported}`)
+            if (type) {
+                    SpecUtil.open(filename)
+            } else {
+                          console.log(`Type should be specified as the third parameter, ${optionSupported}`)
+            }
         }
       }
     }
