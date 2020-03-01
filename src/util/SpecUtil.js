@@ -104,7 +104,7 @@ class SpecUtil {
         return `${index + 1}. ${ele}\n`
       }).join('')
       const optionSupported = `\n${chalk.blue(indexContent)} are supported`
-      if (type && kvMap.hasOwnProperty(type)) {
+      if (type ) {
         const value = kvMap[type]
         if (value) {
           let url
