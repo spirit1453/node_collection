@@ -18,7 +18,13 @@ class SpecUtil {
   static open(itemPath, option={}) {
     let {shouldLog = true, cmdEntry} = option
         if (!cmdEntry || !(typeof cmdEntry === 'string')) {
-            cmdEntry = ['idea', 'code'].find(ele => CliUtil.isInstalled(ele))
+            const cmdAry = ['code']
+            if (SystemUtil.isWindows()) {
+            cmdAry.push('idea64')
+            } else  {
+             cmdAry.push('idea')
+            }
+            cmdEntry = cmdAry.find(ele => CliUtil.isInstalled(ele))
         }
     if (cmdEntry) {
          const cmd = `${cmdEntry} ${FileUtil.getAbsolutePath(itemPath)}`
