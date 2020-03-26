@@ -118,7 +118,7 @@ class SpecUtil {
           if (_.isString(value)) {
             url = value
           } else if (_.isFunction(value)) {
-            url = value(argv._.slice(2))
+            url = value(process.argv.slice(4))
             if (!url) {
                 return
             }
