@@ -130,10 +130,13 @@ class SpecUtil {
             if (shouldCopy) {
               clipboardy.writeSync(url)
             }
+            if (argv.o) {
             UnifyUtil.openUrl(url, {
-                            shouldExecute: !shouldBeSilent,
-                            shouldLog: true
-                        })
+                                        shouldExecute: !shouldBeSilent,
+                                        shouldLog: true
+                                    })
+            }
+
           }
 
         } else {
