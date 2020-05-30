@@ -1,6 +1,7 @@
 const path = require('path')
 const os = require('os')
 const fse = require('fs-extra')
+const walk = require('walk')
 
 const SystemUtil = require('./SystemUtil')
 const WindowsUtil = require('./WindowsUtil')
@@ -11,6 +12,33 @@ const version = '2019.3'
 const generalId = ideaProductId + version
 
 class PathUtil {
+     static getClassPath() {
+		return new Promise(resolve => {
+			const jarDir = path.resolve(os.homedir(), '.gradle/caches/modules-2/files-2.1')
+            const walker = walk.walk(jarDir)
+
+			let classPathAry = []
+            	walker.on("file", function (root, fileStats, next) {
+            		if (fileStats.name.match(/(?<!sources)\.jar$/)) {
+            //			console.log(root, fileStats.name)
+            			const absPath = path.resolve(root, fileStats.name)
+            			classPathAry.push(absPath)
+            		}
+
+            		next()
+
+                  });
+
+                  walker.on("errors", function (root, nodeStatsArray, next) {
+                    console.error(root)
+                  })
+
+            	walker.on('end', () => {
+            		resolve(classPathAry)
+            	})
+		})
+     }
+
      static getVscodePlugin() {
          let result
 

@@ -16,6 +16,7 @@
     "inquirer": "^6.2.0",
     "isbinaryfile": "^4.0.2",
     "simple-git": "^1.107.0",
+    "walk": "^2.3.14",
     "winston": "^3.1.0"
   },
   "description": "js collection",
