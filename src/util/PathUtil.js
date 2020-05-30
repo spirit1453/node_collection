@@ -1,5 +1,6 @@
 const path = require('path')
 const os = require('os')
+const fs = require('fs')
 const fse = require('fs-extra')
 const walk = require('walk')
 
@@ -11,18 +12,31 @@ const ideaProductId = 'IdeaIC'
 const version = '2019.3'
 const generalId = ideaProductId + version
 
+const rootDir = path.resolve(__dirname, '../..')
+const classPathTxt = path.resolve(rootDir, 'local/classPath.txt')
+if (!fs.existsSync(classPathTxt)) {
+	fse.ensureFileSync(classPathTxt)
+}
+
 class PathUtil {
-     static getClassPath() {
+     static getClassPath(shouldUpdate) {
 		return new Promise(resolve => {
+			const classPathTxtContent = fs.readFileSync(classPathTxt).toString().trim()
+			if (classPathTxtContent) {
+				resolve(classPathTxtContent.split(path.delimiter))
+				if (!shouldUpdate) {
+					return
+				}
+			}
 			const jarDir = path.resolve(os.homedir(), '.gradle/caches/modules-2/files-2.1')
             const walker = walk.walk(jarDir)
-
 			let classPathAry = []
             	walker.on("file", function (root, fileStats, next) {
             		if (fileStats.name.match(/(?<!sources)\.jar$/)) {
             //			console.log(root, fileStats.name)
             			const absPath = path.resolve(root, fileStats.name)
             			classPathAry.push(absPath)
+            			fs.writeFileSync(classPathTxt, classPathAry.join(path.delimiter))
             		}
 
             		next()
