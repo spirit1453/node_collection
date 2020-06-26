@@ -206,6 +206,10 @@ class SpecUtil {
             })
         return ysOpen
   }
+
+  static getBoolean(content) {
+  	return Boolean(content.toString('hex') === '01')
+  }
 }
 
 Object.freeze(SpecUtil)
