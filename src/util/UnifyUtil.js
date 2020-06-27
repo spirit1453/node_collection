@@ -32,6 +32,9 @@ class UnifyUtil {
                   open "${url}"
                 `
       }
+      if (SystemUtil.isLinux()) {
+      	cmd = `xdg-open ${url}`
+      }
 
           if (shouldExecute) {
               childProcess.execSync(cmd, {
