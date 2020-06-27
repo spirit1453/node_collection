@@ -9,6 +9,18 @@ const FileUtil = require('./FileUtil')
 const SystemUtil = require('./SystemUtil')
 
 class CliUtil {
+	static runScript(filePath) {
+		let cmd = ''
+		if (SystemUtil.isWindows) {
+			cmd = filePath
+		} else {
+			cmd = `bash ${filePath}`
+		}
+
+		childProcess.execSync(cmd, {
+        			  stdio: 'inherit'
+        			})
+	}
   static haveSthToCommit(cwd) {
         let execOption = {}
         if (cwd) {
