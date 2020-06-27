@@ -11,7 +11,7 @@ const SystemUtil = require('./SystemUtil')
 class CliUtil {
 	static runScript(filePath) {
 		let cmd = ''
-		if (SystemUtil.isWindows) {
+		if (SystemUtil.isWindows()) {
 			cmd = filePath
 		} else {
 			cmd = `bash ${filePath}`
