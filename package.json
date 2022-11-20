@@ -24,7 +24,7 @@
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.0",
     "eslint-plugin-standard": "^3.1.0",
-    "flow-remove-types": "^1.2.3",
+    "flow-remove-types": "^2.0.0",
     "husky": "^0.14.3",
     "jest": "^23.4.2"
   },
